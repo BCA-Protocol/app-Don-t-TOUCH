@@ -58,7 +58,7 @@ export default function RootLayout({ children }) {
         {/* Blockchain Analytics Script */}
         <Script
           id="blockchain-analytics-script"
-          src="https://blockchain-analytics-dev-181319171049.us-central1.run.app/script.js"
+          src="https://analytics.blockchain-ads.com/script.js"
           data-website-id="1e5b0721-a275-46d6-9bc7-7fda4f8b92d0"
           strategy="afterInteractive"
         />
