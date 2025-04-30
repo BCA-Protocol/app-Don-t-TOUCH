@@ -55,6 +55,22 @@ export default function RootLayout({ children }) {
           `,
           }}
         />
+        {/* Blockchain Analytics Script */}
+        <Script
+          id="blockchain-analytics-script"
+          src="https://blockchain-analytics-dev-181319171049.us-central1.run.app/script.js"
+          data-website-id="1e5b0721-a275-46d6-9bc7-7fda4f8b92d0"
+          strategy="afterInteractive"
+        />
+        {/* Cookie3 Analytics Script */}
+        <Script
+          src="https://cdn.markfi.xyz/scripts/analytics/0.11.24/cookie3.analytics.min.js"
+          integrity="sha384-ihnQ09PGDbDPthGB3QoQ2Heg2RwQIDyWkHkqxMzq91RPeP8OmydAZbQLgAakAOfI"
+          crossOrigin="anonymous"
+          async
+          strategy="lazyOnload"
+          site-id="d5bd7afc-d179-4a2a-a949-0dc31d50279a"
+        />
       </head>
       <body className="relative flex flex-col h-full bg-black">
         {/* GTM noscript */}

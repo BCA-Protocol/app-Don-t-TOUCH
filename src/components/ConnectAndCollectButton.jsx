@@ -3,7 +3,7 @@ import { handleTaskCompletion, toggleCollecting,addPointsToUser } from "@/utils/
 import { ConnectKitButton } from "connectkit";
 import { ConnectKitProvider } from "connectkit";
 import { useEffect, useState, useRef } from "react";
-import { useAccount, useReadContract, useWriteContract } from "wagmi";
+import { useAccount, useReadContract, useWriteContract, useConnect } from "wagmi";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { formatLargeNumber } from "@/utils/helper";
 
@@ -17,6 +17,7 @@ const ConnectAndCollectButton = ({ userData }) => {
     isConnected,
     isConnecting: walletIsConnecting,
   } = useAccount();
+  const { connectors, connect, disconnect, connectedConnector } = useConnect();
   const contractAddress = process.env.NEXT_PUBLIC_SMART_CONTRACT_ADDRESS;
   const {
     writeContract,
@@ -33,6 +34,8 @@ const ConnectAndCollectButton = ({ userData }) => {
   const [methodStart, setMethodStart] = useState(false);
   const [methodStop, setMethodStop] = useState(false);
   const [userCollecting, setUserCollecting] = useState(userData.collecting);
+  const [wallets, setWallets] = useState([]);
+
 
   const {
     data: readData,
@@ -54,6 +57,28 @@ const ConnectAndCollectButton = ({ userData }) => {
       setBlockPoints(readData);
     }
   }, [readData, readSuccess]);
+
+    // Whenever Wagmi reports a new address (or no address)…
+    useEffect(() => {
+      if (address && chain) {
+        // add it if not already in our list
+        setWallets((prev) => {
+          if (!prev.find((w) => w.address === address)) {
+            const newWallet = { address, chainId: chain.id };
+            // notify BCA immediately
+            window.bca?.trackWallet(address, chain.id, {
+              wallet_type: connectedConnector?.name || "unknown",
+              connected_at: new Date().toISOString(),
+            });
+            return [...prev, newWallet];
+          }
+          return prev;
+        });
+      } else {
+        // user disconnected: clear all or selectively remove
+        setWallets([]);
+      }
+    }, [address, chain, connectedConnector]);
 
   // setTimeout(() => {
   //   // console.log("Refetching...");
