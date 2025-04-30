@@ -17,7 +17,7 @@ const ConnectAndCollectButton = ({ userData }) => {
     isConnected,
     isConnecting: walletIsConnecting,
   } = useAccount();
-  const { connectors, connect, disconnect, connectedConnector } = useConnect();
+  // const { connectors, connect, disconnect, connectedConnector } = useConnect();
   const contractAddress = process.env.NEXT_PUBLIC_SMART_CONTRACT_ADDRESS;
   const {
     writeContract,
@@ -59,26 +59,29 @@ const ConnectAndCollectButton = ({ userData }) => {
   }, [readData, readSuccess]);
 
     // Whenever Wagmi reports a new address (or no address)…
-    useEffect(() => {
-      if (address && chain) {
-        // add it if not already in our list
-        setWallets((prev) => {
-          if (!prev.find((w) => w.address === address)) {
-            const newWallet = { address, chainId: chain.id };
-            // notify BCA immediately
-            window.bca?.trackWallet(address, chain.id, {
-              wallet_type: connectedConnector?.name || "unknown",
-              connected_at: new Date().toISOString(),
-            });
-            return [...prev, newWallet];
-          }
-          return prev;
-        });
-      } else {
-        // user disconnected: clear all or selectively remove
-        setWallets([]);
-      }
-    }, [address, chain, connectedConnector]);
+    // useEffect(() => {
+    //   console.log("address", address);
+    //   console.log("chain", chain);
+    //   console.log("connectedConnector", connectedConnector);
+    //   if (address && chain) {
+    //     // add it if not already in our list
+    //     setWallets((prev) => {
+    //       if (!prev.find((w) => w.address === address)) {
+    //         const newWallet = { address, chainId: chain.id };
+    //         // notify BCA immediately
+    //         window.bca?.trackWallet(address, chain.id, {
+    //           wallet_type: connectedConnector?.name || "unknown",
+    //           connected_at: new Date().toISOString(),
+    //         });
+    //         return [...prev, newWallet];
+    //       }
+    //       return prev;
+    //     });
+    //   } else {
+    //     // user disconnected: clear all or selectively remove
+    //     setWallets([]);
+    //   }
+    // }, [address, chain, connectedConnector]);
 
   // setTimeout(() => {
   //   // console.log("Refetching...");
