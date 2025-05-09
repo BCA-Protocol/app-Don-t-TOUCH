@@ -19,6 +19,7 @@ export async function GET(request, response) {
       method: "POST",
       body,
     }).then((res) => res.json());
+    console.log("token Data", tokenData)
     if(tokenData.error){
       return NextResponse.json({ error: "Internal Server Error" })
     }
@@ -29,6 +30,7 @@ export async function GET(request, response) {
       },
       method: "GET",
     }).then((res) => res.json());
+    console.log("user Data", userData)
 
     if(userData?.message){
       return NextResponse.json({ error: "Internal Server Error" })
